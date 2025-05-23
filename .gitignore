@@ -1,0 +1,85 @@
+# ------------------------
+# Frontend (React - /client)
+# ------------------------
+
+# Dependencies
+/client/node_modules
+
+# Build output
+/client/build
+
+#public Files
+/client/public/chat
+/client/public/healthy
+/client/public/uploads
+
+# Environment files
+/client/.env
+/client/.env.local
+/client/.env.development
+/client/.env.test
+/client/.env.production
+/client/.env.development.local
+/client/.env.test.local
+/client/.env.production.local
+/client/.env*
+
+# Misc
+/client/.DS_Store
+/client/.eslintcache
+/client/.yarn-integrity
+/client/.cache
+/client/npm-debug.log*
+/client/yarn-debug.log*
+/client/yarn-error.log*
+/client/*.tgz
+/client/.npm
+/client/.node_repl_history
+
+# Editor/IDE
+/client/.idea/
+.client/.vscode/
+.client/*.swp
+.client/*.swo
+
+# ------------------------
+# Backend (Spring Boot - /server)
+# ------------------------
+
+# Compiled class files
+/server/target/
+
+# Logs
+/server/*.log
+
+# Environment files
+/server/.env
+/server/.env.*
+
+# Maven & Gradle wrappers
+/server/.mvn/
+!/server/.mvn/wrapper/maven-wrapper.jar
+/server/mvnw
+/server/mvnw.cmd
+/server/gradlew
+/server/gradlew.bat
+/server/gradle/
+!/server/gradle/wrapper/gradle-wrapper.jar
+
+# Build output
+/server/build/
+
+# Misc
+/server/.DS_Store
+
+# IDE
+/server/.idea/
+.server/.vscode/
+.server/*.swp
+.server/*.swo
+
+# ------------------------
+# Global
+# ------------------------
+
+.DS_Store
