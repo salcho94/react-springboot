@@ -211,7 +211,7 @@ const HideChat = () => {
         if (!user.nickName) return;
 
         // 웹소켓 참조 생성
-        const socket = new WebSocket("ws://js94.kro.kr:518/ws/chat");
+        const socket = new WebSocket(process.env.REACT_APP_CHAT_SOCKET_URL);
         ws.current = socket;
 
         // 연결 성공 시 호출
@@ -235,7 +235,7 @@ const HideChat = () => {
                 // 컴포넌트가 언마운트된 경우 재연결 방지
                 if (!componentMounted.current) return;
 
-                const newSocket = new WebSocket("ws://js94.kro.kr:518/ws/chat");
+                const newSocket = new WebSocket(process.env.REACT_APP_CHAT_SOCKET_URL);
                 ws.current = newSocket;
 
                 newSocket.onopen = () => {

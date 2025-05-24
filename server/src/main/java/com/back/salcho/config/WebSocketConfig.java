@@ -13,7 +13,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(new ChatHandler(), "/ws/chat")
-                .setAllowedOrigins("http://js94.kro.kr:3000")
+                .setAllowedOrigins("http://js94.kro.kr:3000","http://localhost:3000")
                 .addInterceptors(new HttpSessionHandshakeInterceptor());
     }
 }

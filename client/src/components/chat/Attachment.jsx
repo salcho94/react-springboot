@@ -5,11 +5,11 @@ const Attachment = memo(({ att, progress, onDownload, onClickImage }) => (
     <div className="mt-2">
         {att.preview !== "" && (
             <img
-                src={`http://js94.kro.kr:3000/chat/${att.preview}`}
+                src={`${process.env.REACT_APP_URL}/chat/${att.preview}`}
                 alt={att.name}
                 className="w-[200px] h-auto max-w-[250px] max-h-[250px] object-cover rounded-lg cursor-pointer"
                 loading="lazy"
-                onClick={() => onClickImage(`http://js94.kro.kr:3000/chat/${att.preview}`)} // 이미지 클릭 시 모달 띄우기
+                onClick={() => onClickImage(`${process.env.REACT_APP_URL}/chat/${att.preview}`)} // 이미지 클릭 시 모달 띄우기
             />
         )}
         <div className="flex items-center space-x-2 bg-gray-100 rounded p-2">
