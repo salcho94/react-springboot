@@ -515,7 +515,7 @@ const HideChat = ({theme}) => {
                     />
                     <textarea
                         ref={inputRef}
-                        className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white-600 text-black"} flex-1 bg-white border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent transition-all resize-none text-sm` }
+                        className={`${theme === "dark" ? "bg-gray-800 text-black" : "bg-white-600 text-black"} flex-1 bg-white border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent transition-all resize-none text-sm` }
                         placeholder="데이터 입력... (Ctrl+V로 이미지 붙여넣기)"
                         value={input}
                         rows={1}
