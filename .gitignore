@@ -45,7 +45,10 @@
 # ------------------------
 # Backend (Spring Boot - /server)
 # ------------------------
+/.idea/*
 
+/server/src/main/resources/*
+/server/out/*
 # Compiled class files
 /server/target/
 
@@ -55,7 +58,7 @@
 # Environment files
 /server/.env
 /server/.env.*
-
+/server/.gradle/*
 # Maven & Gradle wrappers
 /server/.mvn/
 !/server/.mvn/wrapper/maven-wrapper.jar

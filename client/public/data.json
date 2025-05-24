@@ -1,0 +1,16 @@
+{
+  "posts": {
+    "1": { "title": "First Post", "content": "This is the first post." },
+    "2": { "title": "Second Post", "content": "This is the second post." }
+  },
+  "comments": {
+    "1": { "comment": "Great post!" },
+    "2": { "comment": "Very informative, thanks!" }
+  },
+  "useEffect": {
+    "userId": 1,
+    "id": 1,
+    "title": "title text page test",
+    "body": "body test page body"
+  }
+}
