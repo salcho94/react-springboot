@@ -4,6 +4,8 @@ import useFetch from "@/hooks/useFetch";
 import {useNavigate} from "react-router-dom";
 import {useAlert} from "@/hooks/useModal";
 import axiosInstance from "@/services/axiosInstance";
+import {useRecoilState} from "recoil";
+import {themeState} from "@/recoil/theme/atoms";
 
 const BoardList = () => {
     const [page, setPage] = useState(1);
@@ -19,6 +21,7 @@ const BoardList = () => {
     const [sortedData, setSortedData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
     const navigate = useNavigate();
+    const [theme, setTheme] = useRecoilState(themeState);
     const [isOpen, setIsOpen] = useState(false);
     const sortData = (key, order, dataToSort) => {
         return [...dataToSort].sort((a, b) => {
@@ -138,13 +141,18 @@ const BoardList = () => {
                             value={
                             searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="dark:bg-gray-800 dark:text-black-100 block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            className={` ${
+                                theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-100 text-black"
+                            } w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                            `}
                         />
                     </div>
                     <select
                         value={searchCategory}
                         onChange={(e) => setSearchCategory(e.target.value)}
-                        className="dark:bg-gray-800 dark:text-black-100  block w-full sm:w-40 py-2 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className={` ${
+                            theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-100 text-black"
+                        }block w-full sm:w-40 py-2 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
                     >
                         <option value="title">제목</option>
                         <option value="nickName">작성자</option>

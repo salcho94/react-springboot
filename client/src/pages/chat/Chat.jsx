@@ -1,9 +1,12 @@
 import DefaultChat from "@/components/chat/DefaultChat";
 import React, {memo, useState} from "react";
 import HideChat from "@/components/chat/HideChat";
+import {useRecoilState} from "recoil";
+import {themeState} from "@/recoil/theme/atoms";
 
 const Chat = () => {
     const [isOn, setIsOn] = useState(false);
+    const [theme, setTheme] = useRecoilState(themeState);
 
     return (
         <>
@@ -25,7 +28,7 @@ const Chat = () => {
             </div>
 
             {/* 채팅 UI */}
-            {isOn ? <DefaultChat /> : <HideChat />}
+            {isOn ? <DefaultChat theme={theme} /> : <HideChat theme={theme} />}
         </>
     );
 };

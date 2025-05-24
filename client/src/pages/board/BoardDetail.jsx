@@ -15,6 +15,7 @@ import EditorJS from "@editorjs/editorjs";
 import DragDrop from "editorjs-drag-drop";
 import Strikethrough from "editorjs-strikethrough";
 import Table from '@editorjs/table';
+import {themeState} from "@/recoil/theme/atoms";
 
 let passYn ='';
 const BoardDetail = () => {
@@ -43,6 +44,7 @@ const BoardDetail = () => {
     const [progress,setProgress] = useState(false);
     const [comments, setComments] = useState([]);
     const editorRef = useRef(null);
+    const [theme] = useRecoilState(themeState);
 // 댓글 삭제 함수
 
     useEffect(() => {
@@ -381,13 +383,16 @@ const BoardDetail = () => {
             </div>
             <div className="dark:bg-gray-900 dark:text-white dark:border-gray-700">
                 <div className="mb-4">
-                    <label htmlFor="title" className="block text-gray-700 dark:bg-gray-900 dark:text-white dark:border-gray-700">
+                    <label htmlFor="title"  className={`${ theme === "dark" ? "text-white" : " text-black"} block text-gray-700 dark:bg-gray-900 dark:text-white dark:border-gray-700`}>
                         제목
                     </label>
                     <input
                         id="title"
                         type="text"
-                        className="dark:bg-gray-800 dark:text-black-100 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300 focus:outline-none"
+                        className={` ${
+                            theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-100 text-black"
+                        } w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300 focus:outline-none
+                            `}
                         value={updateData.title}
                         onChange={handleChange}
                         placeholder="제목을 입력하세요 (50자 이내로 입력)"
@@ -396,7 +401,7 @@ const BoardDetail = () => {
                     />
                 </div>
                 <div className="mb-4">
-                    <label htmlFor="title" className="block text-gray-700 dark:bg-gray-900 dark:text-white dark:border-gray-700">
+                    <label htmlFor="title" className={`${ theme === "dark" ? "text-white" : " text-black"} block text-gray-700 dark:bg-gray-900 dark:text-white dark:border-gray-700`}>
                         내용
                     </label>
                     <div id="editorjs" className="border border-gray-300 rounded-lg shadow-md dark:bg-gray-900 dark:text-white dark:border-gray-700"></div>
@@ -472,7 +477,10 @@ const BoardDetail = () => {
                         <input
                             id="password"
                             type="password"
-                            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300 focus:outline-none"
+                            className={` ${
+                                theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-100 text-black"
+                            } w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300 focus:outline-none
+                            `}
                             placeholder="비밀번호를 입력하세요(20자 이내로 입력)"
                             maxLength="20"
                             value={updateData.password}
@@ -483,18 +491,25 @@ const BoardDetail = () => {
                 )}
                 <hr/>
                 <div className="mt-4 p-4 border rounded-lg shadow-md">
-                    <label htmlFor="content" className="block text-gray-700 font-medium mb-2">
+                    <label htmlFor="content"  className={` ${
+                        theme === "dark" ? "text-white" : " text-black"
+                    } block text-gray-700 font-medium mb-2
+                            `}>
                         댓글
                     </label>
 
                     {/* 댓글 목록 */}
                     <ul className="mb-4 space-y-2">
                         {comments.length > 0 ? comments.map((comment) => (
-                            <li key={comment.reviewId} className="flex justify-between items-center p-3 border rounded-lg bg-gray-50">
+                            <li key={comment.reviewId}
+                                className={` ${
+                                    theme === "dark" ? "text-white" : " text-black"
+                                } flex justify-between items-center p-3 border rounded-lg bg-gray-50
+                            `}>
                                 <div>
                                     <div >
-                                        <span className="font-semibold mr-3">{comment.nickName}</span>
-                                        <span className="text-gray-500 font-light">({comment.regDate})</span>
+                                        <span className={`${ theme === "dark" ? "text-black" : " text-black"} font-semibold mr-3`}>{comment.nickName}</span>
+                                        <span className={`${ theme === "dark" ? "text-black" : " text-black"} text-gray-500 font-light`} >({comment.regDate})</span>
                                     </div>
                                     <p className="text-sm text-gray-700">{comment.comment}</p>
                                 </div>
@@ -505,7 +520,10 @@ const BoardDetail = () => {
                                 }
                             </li>
                         )) :
-                            <li className="flex justify-between items-center p-3 border rounded-lg bg-gray-50">
+                            <li  className={` ${
+                                theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-100 text-black"
+                            } flex justify-between items-center p-3 border rounded-lg bg-gray-50
+                            `} >
                                 <div>
                                     댓글이 존재하지 않습니다.
                                 </div>
@@ -517,7 +535,10 @@ const BoardDetail = () => {
                     <div className="flex items-stretch space-x-2">
                         <textarea
                             id="comment"
-                            className="w-full h-32 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300 focus:outline-none resize-none"
+                            className={` ${
+                                theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-100 text-black"
+                            } w-full h-32 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300 focus:outline-none resize-none
+                            `}
                             value={comment}
                             onChange={(e) => setComment(e.target.value)}
                             placeholder="내용을 입력하세요 (200자 이내로 입력)"

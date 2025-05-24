@@ -69,7 +69,7 @@ const Header = memo(({ onlineUsers ,handleSendMail,decreaseFontSize,increaseFont
     </header>
 ));
 
-const DefaultChat = () => {
+const DefaultChat = ({theme }) => {
     const [user] = useRecoilState(userDataState);
     const { showAlert, AlertDialog } = useAlert();
     const { showProcessing, hideProcessing, ProcessingModal } = useProcessingModal();
@@ -485,7 +485,7 @@ const DefaultChat = () => {
                     />
                     <textarea
                         ref={inputRef}
-                        className="dark:bg-gray-800 dark:text-black-100 flex-1 bg-gray-50 border border-gray-200 rounded-lg px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
+                        className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white-600 text-black"} dark:bg-gray-800 dark:text-black-100 flex-1 bg-gray-50 border border-gray-200 rounded-lg px-6 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none`}
                         placeholder="메시지를 입력하세요 (Ctrl+V로 이미지 붙여넣기)"
                         value={input}
                         rows={1}

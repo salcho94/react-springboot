@@ -11,6 +11,7 @@ import Code from "@editorjs/code";
 import ImageTool from "@editorjs/image";
 import DragDrop from "editorjs-drag-drop";
 import Strikethrough from "editorjs-strikethrough";
+import {themeState} from "@/recoil/theme/atoms";
 
 const BoardInsert = () => {
     const [user] = useRecoilState(userDataState);
@@ -20,6 +21,7 @@ const BoardInsert = () => {
     const [isPasswordRequired, setIsPasswordRequired] = useState(false);
     const editorRef = useRef(null);
     const navigate = useNavigate();
+    const [theme] = useRecoilState(themeState);
 
     const [insertData, setInsertData] = useState({
         title: '',
@@ -215,13 +217,16 @@ const BoardInsert = () => {
             </div>
             <div>
                 <div className="mb-4">
-                    <label htmlFor="title" className=" block text-gray-700 font-medium mb-2">
+                    <label htmlFor="title" className={`${ theme === "dark" ? "text-white" : " text-black"} block text-gray-700 dark:bg-gray-900 dark:text-white dark:border-gray-700`}>
                         제목
                     </label>
                     <input
                         id="title"
                         type="text"
-                        className="dark:bg-gray-800 dark:text-black-100 w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300 focus:outline-none"
+                        className={` ${
+                            theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-100 text-black"
+                        } w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300 focus:outline-none
+                            `}
                         value={insertData.title}
                         onChange={handleChange}
                         placeholder="제목을 입력하세요 (50자 이내로 입력)"
@@ -229,7 +234,7 @@ const BoardInsert = () => {
                     />
                 </div>
                 <div className="mb-4">
-                    <label htmlFor="content" className="block text-gray-700 font-medium mb-2">
+                    <label htmlFor="content" className={`${ theme === "dark" ? "text-white" : " text-black"} block text-gray-700 dark:bg-gray-900 dark:text-white dark:border-gray-700`}>
                         내용
                     </label>
                     <div id="editorjs" className="border border-gray-300 rounded-lg shadow-md dark:bg-gray-900 dark:text-white dark:border-gray-700"></div>
@@ -276,7 +281,7 @@ const BoardInsert = () => {
                         checked={isPasswordRequired}
                         onChange={() => setIsPasswordRequired(!isPasswordRequired)}
                     />
-                    <label htmlFor="passwordCheckbox" className="text-gray-700 font-medium">
+                    <label htmlFor="passwordCheckbox" className={`${ theme === "dark" ? "text-white" : " text-black"} block text-gray-700 dark:bg-gray-900 dark:text-white dark:border-gray-700`}>
                         비밀글
                     </label>
                 </div>
@@ -285,13 +290,16 @@ const BoardInsert = () => {
                 {/* 비밀번호 입력 필드 */}
                 {isPasswordRequired && (
                     <div className="mb-4">
-                        <label htmlFor="password" className="block text-gray-700 font-medium mb-2">
+                        <label htmlFor="password" className={`${ theme === "dark" ? "text-white" : " text-black"} block text-gray-700 dark:bg-gray-900 dark:text-white dark:border-gray-700`}>
                             비밀번호
                         </label>
                         <input
                             id="password"
                             type="password"
-                            className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300 focus:outline-none"
+                            className={` ${
+                                theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-100 text-black"
+                            } w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-300 focus:outline-none
+                            `}
                             placeholder="비밀번호를 입력하세요(20자 이내로 입력)"
                             maxLength="20"
                             value={insertData.password}
