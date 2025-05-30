@@ -1,5 +1,6 @@
 package com.back.salcho.util;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -20,8 +21,9 @@ import java.util.*;
 @RestController
 @RequestMapping("/api/file")
 public class FileController {
+    @Value("${chat.filePath}")
+    private String CHAT_UPLOAD_DIR;
 
-    private static final String CHAT_UPLOAD_DIR = "C:/study/salcho/client/public/chat"; // 기본 저장 경로
     private static final long MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB 제한
 
 
