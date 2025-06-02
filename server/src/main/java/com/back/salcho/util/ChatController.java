@@ -14,9 +14,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -115,6 +114,24 @@ public class ChatController {
         } catch (IOException e) {
             throw new RuntimeException("파일을 읽는 중 오류가 발생했습니다.", e);
         }
+    }
+
+
+    @GetMapping("/users")
+    public List<String> getChatUsersByDate(@RequestParam String date) {
+        String folderPath = "D:/chat/" + date;
+        File dateFolder = new File(folderPath);
+
+        if (!dateFolder.exists() || !dateFolder.isDirectory()) {
+            return new ArrayList<>(); // 폴더가 없으면 빈 리스트 반환
+        }
+
+        List<String> nicknames = Arrays.stream(dateFolder.listFiles((dir, name) -> name.endsWith(".txt")))
+                .map(file -> file.getName().replaceFirst("[.][^.]+$", "")) // 확장자 제거
+                .distinct()
+                .collect(Collectors.toList());
+
+        return nicknames;
     }
 
 
