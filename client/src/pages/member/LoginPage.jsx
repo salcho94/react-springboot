@@ -55,6 +55,11 @@ function LoginPage() {
                         id="nickName"
                         className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-700 dark:border-gray-600 dark:text-white text-black"
                         placeholder="NickName"
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                onLoginHandler();
+                            }
+                        }}
                     />
                 </div>
 
@@ -68,6 +73,11 @@ function LoginPage() {
                         id="password"
                         className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-700 dark:border-gray-600 dark:text-white text-black"
                         placeholder="Password"
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                onLoginHandler();
+                            }
+                        }}
                     />
                 </div>
 
