@@ -39,7 +39,7 @@ const Home = () => {
                     <a
                         href="#"
                         className={`inline-flex items-center px-4 py-3 rounded-lg w-full dark:bg-gray-800 dark:hover:bg-gray-700 dark:hover:text-white ${
-                            activeTab === 'profile' ? 'bg-blue-700 text-white' : 'bg-gray-50 hover:bg-gray-100'
+                            activeTab === 'develop' ? 'bg-blue-700 text-white' : 'bg-gray-50 hover:bg-gray-100'
                         }`}
                         onClick={() => handleTabClick('develop')}
                     >
