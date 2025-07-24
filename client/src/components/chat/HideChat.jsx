@@ -2,11 +2,13 @@ import React, {memo, useCallback, useEffect, useRef, useState} from "react";
 import {useRecoilState} from "recoil";
 import {userDataState} from "@/recoil/auth/atoms";
 import {Calculator, FileSpreadsheet, Filter, Paperclip, Send, X} from "lucide-react";
-
+import { PhoneCall, ArrowLeft } from "lucide-react";
 import axiosInstance from "@/services/axiosInstance";
 import {useAlert, useProcessingModal} from "@/hooks/useModal";
 import EmojiPicker from "@/components/chat/EmojiPicker";
+import {useLocation, useNavigate} from "react-router-dom";
 import MemoizedRenderMessage from "@/components/chat/MemoizedRenderMessage";
+import {useParams} from "react-router-dom";
 
 
 // Memoized Attachment component
@@ -45,7 +47,7 @@ const Attachment = memo(({ att, index, onRemove }) => (
 ));
 
 // Excel-like Header component
-const Header = memo(({ onlineUsers, handleSendMail, decreaseFontSize, increaseFontSize, fontSize }) => (
+const Header = memo(({ onlineUsers, handleSendMail, decreaseFontSize, increaseFontSize, fontSize,navigate }) => (
     <header className="bg-[#217346] text-white border-b border-gray-300">
         <div className="flex items-center justify-between px-2 py-1">
             <div className="flex items-center">
@@ -63,9 +65,19 @@ const Header = memo(({ onlineUsers, handleSendMail, decreaseFontSize, increaseFo
                     onClick={handleSendMail}
                     className="text-xs bg-[#185c37] hover:bg-[#0f4025] px-2 py-1 rounded flex items-center"
                 >
-                    <Calculator className="w-3 h-3 mr-1" />
+                    <PhoneCall className="w-3 h-3 mr-1" />
                     <span>관리자 호출</span>
                 </button>
+
+                <button
+                    type="button"
+                    onClick={() => navigate('/chatList')}
+                    className="text-xs bg-[#185c37] hover:bg-[#0f4025] px-2 py-1 rounded flex items-center"
+                >
+                    <ArrowLeft className="w-3 h-3 mr-1" />
+                    <span>목록으로</span>
+                </button>
+
             </div>
         </div>
         <div className="bg-[#E7F1E9] text-black px-2 py-1 text-xs">
@@ -98,7 +110,7 @@ const Header = memo(({ onlineUsers, handleSendMail, decreaseFontSize, increaseFo
     </header>
 ));
 
-const HideChat = ({theme}) => {
+const HideChat = ({theme,roomId}) => {
     const [user] = useRecoilState(userDataState);
     const { showAlert, AlertDialog } = useAlert();
     const { showProcessing, hideProcessing, ProcessingModal } = useProcessingModal();
@@ -121,6 +133,42 @@ const HideChat = ({theme}) => {
 
     // 컴포넌트 마운트 상태 추적용 ref
     const componentMounted = useRef(true);
+
+    useEffect(() => {
+        const fetchMessages = async () => {
+            try {
+                const response = await axiosInstance.get(`/api/chat/history/${roomId}`);
+
+                const formattedMessages = response.data.map(msg => {
+                    let attachments = msg.attachments;
+
+                    if (typeof attachments === 'string') {
+                        try {
+                            attachments = JSON.parse(attachments);
+                        } catch (e) {
+                            console.warn('attachments 파싱 실패:', attachments);
+                            attachments = []; // 파싱 실패 시 빈 배열로 처리
+                        }
+                    }
+
+                    return {
+                        ...msg,
+                        timestamp: new Date(msg.timestamp),
+                        attachments: attachments || [], // null 방지
+                    };
+                });
+
+                setMessages(formattedMessages);
+            } catch (error) {
+                console.error("메시지 불러오기 실패", error);
+            }
+        };
+
+        if (roomId) {
+            fetchMessages();
+        }
+    }, [roomId]);
+
 
     useEffect(() => {
         const handleFocus = () => {
@@ -188,6 +236,7 @@ const HideChat = ({theme}) => {
         if (ws.current?.readyState === WebSocket.OPEN) {
             ws.current.send(JSON.stringify({
                 type: "typing",
+                roomId,
                 user: user.nickName
             }));
 
@@ -201,6 +250,7 @@ const HideChat = ({theme}) => {
         if (ws.current?.readyState === WebSocket.OPEN) {
             ws.current.send(JSON.stringify({
                 type: "endTyping",
+                roomId,
                 user: user.nickName
             }));
         }
@@ -219,6 +269,7 @@ const HideChat = ({theme}) => {
             if (socket.readyState === WebSocket.OPEN) {
                 socket.send(JSON.stringify({
                     type: 'connect',
+                    roomId,
                     user: { nickName: user.nickName }
                 }));
                 console.log("✅ 연결 성공:", user.nickName);
@@ -279,9 +330,8 @@ const HideChat = ({theme}) => {
     // Optimized message handler
     const handleMessage = useCallback((event) => {
         const data = JSON.parse(event.data);
-
         if (data.type === 'userList') {
-            setOnlineUsers(prev => [...new Set(data.userList)]);
+            setOnlineUsers([...new Set(data.userList)]);
         } else if (data.type === 'system') {
             setMessages(prev => [...prev, {
                 text: data.text,
@@ -290,9 +340,14 @@ const HideChat = ({theme}) => {
                 type: 'system'
             }]);
         } else if (data.type === "typing") {
-            setTypingUsers(prev => [...new Set([...prev, data.user])]);
+            if (Array.isArray(data.typingUsers)) {
+                setTypingUsers(data.typingUsers);
+            }
         } else if (data.type === "endTyping") {
-            setTypingUsers(prev => prev.filter(user => user !== data.user));
+            const user = data.user;
+            if (user) {
+                setTypingUsers(prev => prev.filter(u => u !== user));
+            }
         } else {
             setMessages(prev => [...prev, {
                 ...data,
@@ -308,6 +363,7 @@ const HideChat = ({theme}) => {
             }
         }
     }, [isWindowFocused, user.nickName]);
+
 
     // Auto-scroll effect with throttling
     useEffect(() => {
@@ -373,6 +429,7 @@ const HideChat = ({theme}) => {
                     url: file.url,
                     preview: file.preview,
                 })),
+                roomId
             };
 
             ws.current?.send(JSON.stringify(message));
@@ -436,7 +493,7 @@ const HideChat = ({theme}) => {
 
     const handleCompositionStart = () => setIsComposing(true);
     const handleCompositionEnd = () => setIsComposing(false);
-
+    const navigate = useNavigate()
     return (
         <div className="flex flex-col min-h-screen sm:min-h-[500px] max-h-screen bg-white max-w-[330px] sm:max-w-[none] border border-gray-300">
             <Header
@@ -445,6 +502,7 @@ const HideChat = ({theme}) => {
                 fontSize={fontSize}
                 decreaseFontSize={decreaseFontSize}
                 increaseFontSize={increaseFontSize}
+                navigate={navigate}
             />
             <div className="flex-1 overflow-y-auto bg-white">
                 {messages.map((msg, index) => (
@@ -485,7 +543,7 @@ const HideChat = ({theme}) => {
             {(typingUsers.length > 0 && typingUsers.join(", ").replace(/^, /, "")) && (
                 <div className="text-xs text-gray-600 bg-gray-50 px-2 py-1 border-t border-gray-200">
           <span>
-            {typingUsers.join(", ").replace(/^, /, "")} 님이 데이터 입력 중...
+            {typingUsers.length > 0 && `${typingUsers.join(", ")} 님이 입력 중...`}
           </span>
                 </div>
             )}

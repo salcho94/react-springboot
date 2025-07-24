@@ -62,8 +62,9 @@ const BoardInsert = () => {
                                     formData.append("image", file);
 
                                     try {
+
                                         const response = await axiosInstance.post("/api/board/imageFile", formData);
-                                        console.log(response);
+
                                         const result = await response.data;
                                         return {
                                             success: 1,

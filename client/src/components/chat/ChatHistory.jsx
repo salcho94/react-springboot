@@ -43,7 +43,7 @@ const ChatHistory = () => {
             return;
         }
 
-        axiosInstance.get('/api/chat/history', {
+        axiosInstance.get('/api/chat/txtHistory', {
             params: {
                 nickName: selectedNickName,
                 date: formatDate(selectedDate),

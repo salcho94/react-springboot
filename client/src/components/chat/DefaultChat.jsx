@@ -6,6 +6,7 @@ import RenderMessage from "@/components/chat/RenderMessage";
 import axiosInstance from "@/services/axiosInstance";
 import {useAlert, useProcessingModal} from "@/hooks/useModal";
 import EmojiPicker from "@/components/chat/EmojiPicker";
+import {useParams} from "react-router-dom";
 
 
 // Memoized Message component
@@ -70,6 +71,7 @@ const Header = memo(({ onlineUsers ,handleSendMail,decreaseFontSize,increaseFont
 ));
 
 const DefaultChat = ({theme }) => {
+    const { roomId } = useParams();
     const [user] = useRecoilState(userDataState);
     const { showAlert, AlertDialog } = useAlert();
     const { showProcessing, hideProcessing, ProcessingModal } = useProcessingModal();
@@ -188,6 +190,7 @@ const DefaultChat = ({theme }) => {
             if (socket.readyState === WebSocket.OPEN) {
                 socket.send(JSON.stringify({
                     type: 'connect',
+                    roomId,
                     user: { nickName: user.nickName }
                 }));
                 console.log("✅ 연결 성공:", user.nickName);
@@ -345,9 +348,9 @@ const DefaultChat = ({theme }) => {
                     url: file.url,
                     preview: file.preview,
                 })),
+                roomId
             };
 
-            ws.current?.send(JSON.stringify(message));
             setInput("");
             setAttachments([]);
         } catch (error) {

@@ -241,7 +241,7 @@ public class BoardController {
     @PostMapping("/imageFile")
     public ResponseEntity<?> uploadImage(@RequestParam("image") MultipartFile file) {
         try {
-            String uploadDir = "C:/study/salcho/client/public/uploads/"; // 이미지 저장 경로
+            String uploadDir = "C:/main/react-springboot/client/public/uploads/"; // 이미지 저장 경로
             String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
             Path filePath = Paths.get(uploadDir + fileName);
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);

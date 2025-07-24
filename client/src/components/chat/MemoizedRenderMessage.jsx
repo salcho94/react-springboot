@@ -3,12 +3,15 @@ import {Copy, Paperclip} from "lucide-react";
 import CodeBlock from "@/components/chat/CodeBlock";
 import Attachment from "@/components/chat/Attachment";
 import {downloadFile} from "@/utils/utils";
+import {useRecoilState} from "recoil";
+import {themeState} from "@/recoil/theme/atoms";
 
 const CODE_PATTERNS = /^(import|export|const|let|var|function|class|if|for|while|return|async|await)|[{};]\s*$/m;
 
 const MemoizedRenderMessage = memo(({ msg, index, user, fontSize }) => {
     const [progress, setProgress] = useState(true);
     const [modalImage, setModalImage] = useState(null); // 모달에 표시할 이미지 URL
+    const [theme] = useRecoilState(themeState);
 
     const handleDownload = (name, url) => {
         setProgress(false);
@@ -58,7 +61,6 @@ const MemoizedRenderMessage = memo(({ msg, index, user, fontSize }) => {
     }, [msg.text, isCode]);
 
 
-
     // 시스템 메시지 처리
     if (msg.type === "userList" || msg.type === "typing" || msg.type === "endTyping") {
         return null;
@@ -98,15 +100,22 @@ const MemoizedRenderMessage = memo(({ msg, index, user, fontSize }) => {
 
 
     return (
-        <div className={`my-1 grid grid-cols-6 hover:bg-gray-50 border-b border-gray-100`}>
+        <div className={`my-1 grid grid-cols-6 hover:bg-gray-50 border-b border-gray-100 text-black`}>
             <div className="col-span-1 text-xs text-gray-500 py-1">
-                {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                {new Date(msg.timestamp).toLocaleString([], {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                })}
+
             </div>
-            <div className="col-span-1 text-xs font-medium py-1 truncate">
+            <div className={` col-span-1 text-xs font-medium py-1 truncate`}>
                 {msg.sender}
             </div>
             <div className="col-span-4 py-1 px-1 text-left">
-                <div style={{ fontSize: `${fontSize}px` }}>
+                <div style={{ fontSize: `${fontSize}px` }} >
                     {renderedContent}
                     {msg.attachments?.map((att, i) => (
                         <Attachment

@@ -1,6 +1,5 @@
 package com.back.salcho.util;
 
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +19,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/chat")
-public class ChatController {
+public class ChatGptController {
 
     @Value("${openai.api.key}")
     private String openaiApiKey;
@@ -85,7 +84,7 @@ public class ChatController {
         }
     }
 
-    @GetMapping("/history")
+    @GetMapping("/txtHistory")
     public String getChatHistory(@RequestParam Map<String, Object> params) {
         // 로그로 받은 파라미터 확인
         System.out.println(params.toString());
