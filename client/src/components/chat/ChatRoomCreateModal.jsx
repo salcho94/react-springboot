@@ -26,6 +26,7 @@ const ChatRoomCreateModal = ({ isOpen, onClose, onSubmit }) => {
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
+                            onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
                             className="w-full px-3 py-2 border rounded-md text-sm"
                             placeholder="예: 프론트엔드 팀"
                         />
@@ -35,6 +36,7 @@ const ChatRoomCreateModal = ({ isOpen, onClose, onSubmit }) => {
                         <input
                             type="password"
                             value={password}
+                            onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
                             onChange={(e) => setPassword(e.target.value)}
                             className="w-full px-3 py-2 border rounded-md text-sm"
                             placeholder="입력하지 않으면 공개방"

@@ -19,6 +19,7 @@ const PasswordCheckModal = ({ isOpen, onClose, onSubmit }) => {
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && handleConfirm()}
                     placeholder="채팅방 비밀번호"
                     className="w-full border px-3 py-2 rounded text-sm"
                 />
